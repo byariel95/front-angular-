@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Note } from '../../model/Note.model';
 import {NoteService} from '../../services/note.service';
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 
 
 @Component({
@@ -12,17 +12,33 @@ import { Router } from '@angular/router'
 export class NoteFormComponent implements OnInit {
 
   note: Note ={
+    _id: '',
     title: '',
     content: '',
     author: '',
   }
 
+  edit: Boolean = false;
+
   constructor(
     private noteService : NoteService,
-    private router : Router
+    private router : Router,
+    private activatedRoute: ActivatedRoute
     ) { }
 
   ngOnInit() {
+    const params =  this.activatedRoute.snapshot.params;
+    if (params) {
+      this.noteService.getNote(params.id)
+      .subscribe(
+        res => {
+          console.log(res);
+          this.note = res;
+          this.edit = true;
+        }
+      )
+      
+    }
   }
 
   submitNote(){
@@ -33,8 +49,19 @@ export class NoteFormComponent implements OnInit {
         this.router.navigate(['/']);
       } ,
       err => console.log(err)
-    )
+    );
     console.log(this.note);
   }
+
+  updateNote(){
+    this.noteService.updateNote(this.note._id,this.note) 
+    .subscribe(
+      res => {
+        console.log(res);
+        this.router.navigate(['/note']);
+      },
+      err => console.log(err)
+    );
+   }
 
 }

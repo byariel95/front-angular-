@@ -20,7 +20,7 @@
                             <td>{{note.content}}</td>
                             <td>{{note.author}}</td>
                             <td>{{note.date}}</td>
-                            <td><button class="btn btn-outline-warning"  >Edit</button></td>
+                            <td><button class="btn btn-outline-warning" [routerLink]="['/note/edit',note._id]">Edit</button></td>
                             <td><button class="btn btn-outline-danger" (click)="deleteNote(note._id)" >delete</button></td>
                           </tr>
                         </tbody>
