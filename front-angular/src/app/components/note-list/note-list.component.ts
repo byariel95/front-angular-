@@ -28,4 +28,15 @@ export class NoteListComponent implements OnInit {
     )
   }
 
+  deleteNote(id : string){
+    this.noteService.deleteNote(id)
+    .subscribe(
+      res => {
+        this.getNotes();
+      },
+      err => console.log(err)
+    )
+
+  }
+
 }
